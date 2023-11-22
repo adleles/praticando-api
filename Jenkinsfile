@@ -1,8 +1,4 @@
 pipeline {
-   environment {
-            dockerImage = "${image}"
-        }
-  
   agent any
   stages {
     stage("verify tooling") {
