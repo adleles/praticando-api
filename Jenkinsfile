@@ -27,7 +27,7 @@ pipeline {
         script {
           def containerIds = sh(returnStdout: true, script: 'docker compose -f docker-compose.prod.yml ps -q').trim().split('\n')
           def desiredContainerId = containerIds[0] 
-          bat "docker exec '${desiredContainerId}' curl http://localhost:9090"
+          sh "docker exec '${desiredContainerId}' curl http://localhost:9090"
         }
       }
     }
