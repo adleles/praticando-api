@@ -13,21 +13,21 @@ pipeline {
     }
     stage('Start container') {
       steps {
-        bat 'docker compose -f docker-compose.prod.yml up -d --no-color --wait'
-        bat 'docker compose -f docker-compose.prod.yml ps'
+        bat 'docker compose -f docker-compose.yml up -d --no-color --wait'
+        bat 'docker compose -f docker-compose.yml ps'
       }
     }
     stage('Wait for container') {
       steps {
-        sh 'sleep 15'
+        bat 'sleep 15'
       }
     }
     stage('Run tests against the container') {
       steps {
         script {
-          def containerIds = sh(returnStdout: true, script: 'docker compose -f docker-compose.prod.yml ps -q').trim().split('\n')
+          def containerIds = bat(returnStdout: true, script: 'docker compose -f docker-compose.prod.yml ps -q').trim().split('\n')
           def desiredContainerId = containerIds[0] 
-          sh "docker exec '${desiredContainerId}' curl http://localhost:9090"
+          bat "docker exec '${desiredContainerId}' curl http://localhost:9090"
         }
       }
     }
