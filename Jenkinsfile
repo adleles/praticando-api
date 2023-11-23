@@ -14,7 +14,7 @@ pipeline {
     stage('Start container') {
       steps {
         bat 'docker compose -f docker-compose.yml up -d --no-color --wait'
-        bat 'docker compose -f docker-compose.stage.yml ps'
+        bat 'docker compose -f docker-compose.yml ps'
       }
     }
     stage('Wait for container') {
@@ -30,6 +30,4 @@ pipeline {
           bat "docker exec '${desiredContainerId}' curl http://localhost:9090"
         }
       }
-    }
   
-}  
