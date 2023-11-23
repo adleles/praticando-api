@@ -11,15 +11,10 @@ pipeline {
           '''
       }
     }
-    stage('Prune Docker data') {
-      steps {
-        bat 'docker system prune -a --volumes -f'
-      }
-    }
     stage('Start container') {
       steps {
         bat 'docker compose -f docker-compose.yml up -d --no-color --wait'
-        bat 'docker compose -f docker-compose.yml ps'
+        bat 'docker compose -f docker-compose.stage.yml ps'
       }
     }
     stage('Wait for container') {
@@ -29,9 +24,12 @@ pipeline {
     }
     stage('Run tests against the container') {
       steps {
-        bat 'curl http://localhost:9090'
+        script {
+          def containerIds = bat(returnStdout: true, script: 'docker compose -f docker-compose.yml ps -q').trim().split('\n')
+          def desiredContainerId = containerIds[0] 
+          bat "docker exec '${desiredContainerId}' curl http://localhost:9090"
+        }
       }
     }
-  }
   
-}
+}  
