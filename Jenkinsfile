@@ -22,6 +22,11 @@ pipeline {
         bat 'docker compose ps'
       }
     }
+    
+    stage('Wait for container') {
+      steps {
+        bat 'sleep 15'
+      }
     stage('Run tests against the container') {
       steps {
         bat 'curl http://localhost:9090'
