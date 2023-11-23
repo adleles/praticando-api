@@ -18,19 +18,15 @@ pipeline {
     }
     stage('Start container') {
       steps {
-        bat 'docker compose -f docker-compose.yml up - d --no-color --wait'
-        bat 'docker compose -f docker-compose.yml ps'
+        bat 'docker compose up -d --no-color --wait'
+        bat 'docker compose ps'
       }
     }
-    stage('Wait for container') {
-      steps {
-        bat 'sleep 30'
-      }
-     }
     stage('Run tests against the container') {
       steps {
         bat 'curl http://localhost:9090'
       }
     }
   }
- } 
+  
+}
